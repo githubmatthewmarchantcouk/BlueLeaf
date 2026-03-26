@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BlueLeaf - 8x8 Demonstration</title>
+  <title>BlueLeaf - 8x8 Demo</title>
 
   <style>
     html,
@@ -99,7 +99,6 @@
       padding-left: 26px;
     }
 
-    /* Chat button container */
     #__8x8-chat-button-container-script_27480031269c54d302b1785\.03659003 {
       position: relative !important;
       z-index: 2;
@@ -179,7 +178,7 @@
         domain: "https://vcc-eu5.8x8.com",
         buttonContainerId:
           "__8x8-chat-button-container-script_27480031269c54d302b1785.03659003",
-        align: "right"
+        align: "right",
       };
 
       var url = new URL(
@@ -188,7 +187,7 @@
       var params = {
         domain: config.domain,
         tenant: config.tenant,
-        channelUuid: config.channelUuid
+        channelUuid: config.channelUuid,
       };
       url.search = new URLSearchParams(params).toString();
 
@@ -281,8 +280,16 @@
         });
       }
 
-      r.async = 1;
+      r.async = true;
       r.src = "https://" + t + "/license" + c + "/dist/primary-bundle.js";
+
+      r.onload = function () {
+        console.log("8x8 co-browsing script loaded");
+      };
+
+      r.onerror = function () {
+        console.error("Failed to load 8x8 co-browsing script");
+      };
 
       w = i.getElementsByTagName(g)[0];
       w.parentNode.insertBefore(r, w);
@@ -294,7 +301,7 @@
       "cb.8x8.com",
       "61e9b014325168004feb37dc",
       {
-        "data-8x8-co-browsing-multi-domain": true,
+        "data-8x8-co-browsing-multi-domain": "true",
         "data-8x8-co-browsing-mode": "full-control"
       }
     );
@@ -302,21 +309,37 @@
 
   <!-- Safe co-browse popup opener -->
   <script>
-    function openCoBrowsePopup() {
-      var instance =
+    function getCoBrowseInstance() {
+      return (
         window.coBrowsingInstance ||
         window.CoBrowsingInstance ||
-        window["coBrowsingInstance"];
+        window["coBrowsingInstance"] ||
+        window["CoBrowsingInstance"]
+      );
+    }
+
+    function openCoBrowsePopup(retries) {
+      retries = typeof retries === "number" ? retries : 20;
+
+      var instance = getCoBrowseInstance();
 
       if (instance && typeof instance.showPopup === "function") {
         instance.showPopup();
-      } else {
-        alert("Co-browsing is still loading or not available yet.");
-        console.error("coBrowsingInstance not ready", {
-          coBrowsingInstance: window.coBrowsingInstance,
-          CoBrowsingInstance: window.CoBrowsingInstance
-        });
+        return;
       }
+
+      if (retries > 0) {
+        setTimeout(function () {
+          openCoBrowsePopup(retries - 1);
+        }, 500);
+        return;
+      }
+
+      alert("Co-browsing is not ready yet. Please try again in a moment.");
+      console.error("coBrowsingInstance not ready", {
+        coBrowsingInstance: window.coBrowsingInstance,
+        CoBrowsingInstance: window.CoBrowsingInstance
+      });
     }
   </script>
 
