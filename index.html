@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BlueLeaf - 8x8 Demo</title>
+  <title>BlueLeaf - 8x8 Demonstration</title>
 
   <style>
     html, body {
@@ -129,141 +129,161 @@
     };
   </script>
 
-  <!-- CO-BROWSING SCRIPT FIRST -->
-  <script>
-    (function (e,i,g,h,t,c,o,b,r,w){
-      r = i.createElement(g);
-      r.setAttribute(h,c);
-
-      if (o) {
-        Object.keys(o).forEach(function(k){
-          r.setAttribute(k,o[k]);
-        });
-      }
-
-      r.async = 1;
-      r.src = 'https://' + t + '/license' + c + '/dist/primary-bundle.js';
-
-      w = i.getElementsByTagName(g)[0];
-      w.parentNode.insertBefore(r,w);
-
-    })(window,document,'script','data-8x8-co-browsing','cb.8x8.com','61e9b014325168004feb37dc',{
-      'data-8x8-co-browsing-multi-domain': true,
-      'data-8x8-co-browsing-mode':'full-control'
-    });
-  </script>
-
-  <!-- WAIT FOR COBROWSE -->
+  <!-- CO-BROWSING FIRST -->
   <script>
     function getCoBrowseInstance() {
       return window.coBrowsingInstance || window.CoBrowsingInstance || null;
     }
 
     function openCoBrowsePopup() {
-      var instance = getCoBrowseInstance();
-
+      const instance = getCoBrowseInstance();
       if (instance && typeof instance.showPopup === "function") {
         instance.showPopup();
+      } else {
+        alert("Co-browsing is still loading. Please try again in a moment.");
+        console.log("coBrowsingInstance:", window.coBrowsingInstance);
+        console.log("CoBrowsingInstance:", window.CoBrowsingInstance);
+      }
+    }
+
+    function loadCoBrowseThenChat() {
+      (function (e, i, g, h, t, c, o, b, r, w) {
+        r = i.createElement(g);
+        r.setAttribute(h, c);
+
+        if (o) {
+          Object.keys(o).forEach(function (k) {
+            r.setAttribute(k, o[k]);
+          });
+        }
+
+        r.async = false;
+        r.src = "https://" + t + "/license" + c + "/dist/primary-bundle.js";
+
+        r.onload = function () {
+          waitForCoBrowseReady(0);
+        };
+
+        r.onerror = function () {
+          console.error("Failed to load co-browsing bundle");
+        };
+
+        w = i.getElementsByTagName(g)[0];
+        w.parentNode.insertBefore(r, w);
+      })(
+        window,
+        document,
+        "script",
+        "data-8x8-co-browsing",
+        "cb.8x8.com",
+        "61e9b014325168004feb37dc",
+        {
+          "data-8x8-co-browsing-multi-domain": true,
+          "data-8x8-co-browsing-mode": "full-control"
+        }
+      );
+    }
+
+    function waitForCoBrowseReady(attempt) {
+      var instance = getCoBrowseInstance();
+
+      if (instance) {
+        console.log("Co-browsing initialized:", instance);
+        loadChat();
         return;
       }
 
-      var tries = 0;
-      var maxTries = 20;
-      var timer = setInterval(function () {
-        var delayedInstance = getCoBrowseInstance();
-        tries++;
+      if (attempt >= 20) {
+        console.error("Co-browsing bundle loaded but instance never initialized");
+        loadChat();
+        return;
+      }
 
-        if (delayedInstance && typeof delayedInstance.showPopup === "function") {
-          clearInterval(timer);
-          delayedInstance.showPopup();
-          return;
-        }
-
-        if (tries >= maxTries) {
-          clearInterval(timer);
-          alert("Co-browsing did not initialize on this page.");
-          console.log("coBrowsingInstance:", window.coBrowsingInstance);
-          console.log("CoBrowsingInstance:", window.CoBrowsingInstance);
-        }
+      setTimeout(function () {
+        waitForCoBrowseReady(attempt + 1);
       }, 500);
     }
   </script>
 
-  <!-- CHAT SCRIPT SECOND -->
+  <!-- CHAT LOADER FUNCTION -->
   <script>
-    (function (c, f, ef) {
-      var typeofC = Object.prototype.toString.call(c);
-      var props = (typeofC === "[object Object]" && c) || {};
-      var cb = f || (typeofC === "[object Function]" && c);
+    function loadChat() {
+      (function (c, f, ef) {
+        var typeofC = Object.prototype.toString.call(c);
+        var props = (typeofC === "[object Object]" && c) || {};
+        var cb = f || (typeofC === "[object Function]" && c);
 
-      var config = {
-        scriptUuid: "script_27480031269c54d302b1785.03659003",
-        tenant: "dWtzYWxlc2VuYWJsZW1lbnQ0NzgwMQ",
-        channelName: "BlueLeaf",
-        channelUuid: "uLgRjuMhRiSI4GLy_-bskQ",
-        domain: "https://vcc-eu5.8x8.com",
-        buttonContainerId: "__8x8-chat-button-container-script_27480031269c54d302b1785.03659003",
-        align: "right"
-      };
+        var config = {
+          scriptUuid: "script_27480031269c54d302b1785.03659003",
+          tenant: "dWtzYWxlc2VuYWJsZW1lbnQ0NzgwMQ",
+          channelName: "BlueLeaf",
+          channelUuid: "uLgRjuMhRiSI4GLy_-bskQ",
+          domain: "https://vcc-eu5.8x8.com",
+          buttonContainerId: "__8x8-chat-button-container-script_27480031269c54d302b1785.03659003",
+          align: "right"
+        };
 
-      var url = new URL("https://cloud8-cc-geo.8x8.com/vcc-chat-channels/public/webchat/discovery");
-      var params = {
-        domain: config.domain,
-        tenant: config.tenant,
-        channelUuid: config.channelUuid
-      };
-      url.search = new URLSearchParams(params).toString();
+        var url = new URL("https://cloud8-cc-geo.8x8.com/vcc-chat-channels/public/webchat/discovery");
+        var params = {
+          domain: config.domain,
+          tenant: config.tenant,
+          channelUuid: config.channelUuid
+        };
+        url.search = new URLSearchParams(params).toString();
 
-      fetch(url)
-        .then(function (response) {
-          return response.json();
-        })
-        .then(function (data) {
-          config.domain = !data.domain ? config.domain : data.domain;
-        })
-        .catch(function (error) {
-          console.warn(
-            "Failed to retrieve override domain, will continue using ",
-            config.domain,
-            error
-          );
-        })
-        .finally(function () {
-          loadChat();
-        });
+        fetch(url)
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (data) {
+            config.domain = !data.domain ? config.domain : data.domain;
+          })
+          .catch(function (error) {
+            console.warn(
+              "Failed to retrieve override domain, will continue using ",
+              config.domain,
+              error
+            );
+          })
+          .finally(function () {
+            reallyLoadChat(config, props, cb, ef);
+          });
 
-      function loadChat() {
-        var se = document.createElement("script");
-        se.type = "text/javascript";
-        se.async = true;
-        se.src = props.loaderURL || (config.domain + "/CHAT/common/js/chatv3.js");
+        function reallyLoadChat(config, props, cb, ef) {
+          var se = document.createElement("script");
+          se.type = "text/javascript";
+          se.async = true;
+          se.src = props.loaderURL || (config.domain + "/CHAT/common/js/chatv3.js");
 
-        Object.keys(config).forEach(function (k) {
-          se.dataset[k] = config[k];
-        });
+          Object.keys(config).forEach(function (k) {
+            se.dataset[k] = config[k];
+          });
 
-        Object.keys(props).forEach(function (k) {
-          se.dataset[k] = props[k];
-        });
+          Object.keys(props).forEach(function (k) {
+            se.dataset[k] = props[k];
+          });
 
-        function handleInitEvent(e) {
-          var initFn = e.detail.init;
-          initFn(config, cb);
-          se.removeEventListener("init", handleInitEvent);
+          function handleInitEvent(e) {
+            var initFn = e.detail.init;
+            initFn(config, cb);
+            se.removeEventListener("init", handleInitEvent);
+          }
+
+          function handleErrorEvent(e) {
+            ef && ef(e);
+            se.removeEventListener("customerror", handleErrorEvent);
+          }
+
+          se.addEventListener("init", handleInitEvent);
+          se.addEventListener("customerror", handleErrorEvent);
+
+          var os = document.getElementsByTagName("script")[0];
+          os.parentNode.insertBefore(se, os);
         }
+      })();
+    }
 
-        function handleErrorEvent(e) {
-          ef && ef(e);
-          se.removeEventListener("customerror", handleErrorEvent);
-        }
-
-        se.addEventListener("init", handleInitEvent);
-        se.addEventListener("customerror", handleErrorEvent);
-
-        var os = document.getElementsByTagName("script")[0];
-        os.parentNode.insertBefore(se, os);
-      }
-    })();
+    loadCoBrowseThenChat();
   </script>
 
 </body>
