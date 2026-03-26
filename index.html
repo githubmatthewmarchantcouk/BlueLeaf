@@ -149,7 +149,7 @@
       <a
         href="#"
         class="cobrowse-button"
-        onclick="openCoBrowsePopup(); return false;"
+        onclick="window.coBrowsingInstance && coBrowsingInstance.showPopup(); return false;"
       >
         <img src="co-browse - transparent.gif" alt="Start co-browsing" />
       </a>
@@ -270,86 +270,32 @@
 
   <!-- 8x8 Co-browsing loader -->
   <script>
-    (function(e, i, g, h, t, c, o, b, r, w) {
-      r = i.createElement(g);
-      r.setAttribute(h, c);
+    (function(e,i,g,h,t,c,o,b,r,w){
+      r=i.createElement(g);
+      r.setAttribute(h,c);
 
-      if (o) {
-        Object.keys(o).forEach(function(k) {
-          r.setAttribute(k, o[k]);
-        });
-      }
-
-      r.async = true;
-      r.src = "https://" + t + "/license" + c + "/dist/primary-bundle.js";
-
-      r.onload = function () {
-        console.log("8x8 co-browsing script loaded");
-      };
-
-      r.onerror = function () {
-        console.error("Failed to load 8x8 co-browsing script");
-      };
-
-      w = i.getElementsByTagName(g)[0];
-      w.parentNode.insertBefore(r, w);
-    })(
-      window,
-      document,
-      "script",
-      "data-8x8-co-browsing",
-      "cb.8x8.com",
-      "61e9b014325168004feb37dc",
-      {
-        "data-8x8-co-browsing-multi-domain": "true",
-        "data-8x8-co-browsing-mode": "full-control"
-      }
-    );
-  </script>
-
-  <!-- Safe co-browse popup opener -->
-  <script>
-    function getCoBrowseInstance() {
-      return (
-        window.coBrowsingInstance ||
-        window.CoBrowsingInstance ||
-        window["coBrowsingInstance"] ||
-        window["CoBrowsingInstance"]
-      );
-    }
-
-    function openCoBrowsePopup(retries) {
-      retries = typeof retries === "number" ? retries : 20;
-
-      var instance = getCoBrowseInstance();
-
-      if (instance && typeof instance.showPopup === "function") {
-        instance.showPopup();
-        return;
-      }
-
-      if (retries > 0) {
-        setTimeout(function () {
-          openCoBrowsePopup(retries - 1);
-        }, 500);
-        return;
-      }
-
-      alert("Co-browsing is not ready yet. Please try again in a moment.");
-      console.error("coBrowsingInstance not ready", {
-        coBrowsingInstance: window.coBrowsingInstance,
-        CoBrowsingInstance: window.CoBrowsingInstance
+      o && Object.keys(o).map(function(k){
+        r.setAttribute(k,o[k]);
       });
-    }
+
+      r.async=1;
+      r.src='https://'+t+'/license'+c+'/dist/primary-bundle.js';
+
+      w=i.getElementsByTagName(g)[0];
+      w.parentNode.insertBefore(r,w);
+
+    })(window,document,'script','data-8x8-co-browsing','cb.8x8.com','61e9b014325168004feb37dc',{
+      'data-8x8-co-browsing-multi-domain': true,
+      'data-8x8-co-browsing-mode':'full-control'
+    });
   </script>
 
-  <!-- Optional debug -->
+  <!-- Debug -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       setTimeout(function () {
         console.log("coBrowsingInstance:", window.coBrowsingInstance);
-        console.log("CoBrowsingInstance:", window.CoBrowsingInstance);
-      }, 3000);
+      }, 2000);
     });
   </script>
 </body>
