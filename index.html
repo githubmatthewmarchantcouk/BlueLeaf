@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BlueLeaf - 8x8 Demonstration</title>
+  <title>BlueLeaf - 8x8 Demo</title>
 
   <style>
     html, body {
@@ -93,7 +93,6 @@
     }
   </style>
 </head>
-
 <body>
 
   <div class="chat-hover-zone"></div>
@@ -114,7 +113,83 @@
     <img src="Blueleafimage1.png" class="full-screen-image" alt="BlueLeaf background">
   </div>
 
-  <!-- WORKING CHAT SCRIPT -->
+  <!-- CO-BROWSING STRINGS -->
+  <script>
+    window.CoBrowsingCustomStrings = {
+      "popup-title": "8x8 Co-browsing",
+      "popup-close": "X",
+      "popup-start-information": "Click Start and share the session ID.",
+      "popup-session-id-label": "Session ID: ",
+      "popup-start-button": "Start",
+      "popup-stop-button": "Stop",
+      "popup-status-label": "Status: ",
+      "status-connecting": "Connecting...",
+      "status-ready": "Connected",
+      "status-disconnected": "Disconnected"
+    };
+  </script>
+
+  <!-- CO-BROWSING SCRIPT FIRST -->
+  <script>
+    (function (e,i,g,h,t,c,o,b,r,w){
+      r = i.createElement(g);
+      r.setAttribute(h,c);
+
+      if (o) {
+        Object.keys(o).forEach(function(k){
+          r.setAttribute(k,o[k]);
+        });
+      }
+
+      r.async = 1;
+      r.src = 'https://' + t + '/license' + c + '/dist/primary-bundle.js';
+
+      w = i.getElementsByTagName(g)[0];
+      w.parentNode.insertBefore(r,w);
+
+    })(window,document,'script','data-8x8-co-browsing','cb.8x8.com','61e9b014325168004feb37dc',{
+      'data-8x8-co-browsing-multi-domain': true,
+      'data-8x8-co-browsing-mode':'full-control'
+    });
+  </script>
+
+  <!-- WAIT FOR COBROWSE -->
+  <script>
+    function getCoBrowseInstance() {
+      return window.coBrowsingInstance || window.CoBrowsingInstance || null;
+    }
+
+    function openCoBrowsePopup() {
+      var instance = getCoBrowseInstance();
+
+      if (instance && typeof instance.showPopup === "function") {
+        instance.showPopup();
+        return;
+      }
+
+      var tries = 0;
+      var maxTries = 20;
+      var timer = setInterval(function () {
+        var delayedInstance = getCoBrowseInstance();
+        tries++;
+
+        if (delayedInstance && typeof delayedInstance.showPopup === "function") {
+          clearInterval(timer);
+          delayedInstance.showPopup();
+          return;
+        }
+
+        if (tries >= maxTries) {
+          clearInterval(timer);
+          alert("Co-browsing did not initialize on this page.");
+          console.log("coBrowsingInstance:", window.coBrowsingInstance);
+          console.log("CoBrowsingInstance:", window.CoBrowsingInstance);
+        }
+      }, 500);
+    }
+  </script>
+
+  <!-- CHAT SCRIPT SECOND -->
   <script>
     (function (c, f, ef) {
       var typeofC = Object.prototype.toString.call(c);
@@ -189,70 +264,6 @@
         os.parentNode.insertBefore(se, os);
       }
     })();
-  </script>
-
-  <!-- CO-BROWSING STRINGS -->
-  <script>
-    window.CoBrowsingCustomStrings = {
-      "popup-title": "8x8 Co-browsing",
-      "popup-close": "X",
-      "popup-start-information": "Click Start and share the session ID.",
-      "popup-session-id-label": "Session ID: ",
-      "popup-start-button": "Start",
-      "popup-stop-button": "Stop",
-      "popup-status-label": "Status: ",
-      "status-connecting": "Connecting...",
-      "status-ready": "Connected",
-      "status-disconnected": "Disconnected"
-    };
-  </script>
-
-  <!-- CO-BROWSING SCRIPT -->
-  <script>
-    (function (e, i, g, h, t, c, o, b, r, w) {
-      r = i.createElement(g);
-      r.setAttribute(h, c);
-
-      if (o) {
-        Object.keys(o).forEach(function (k) {
-          r.setAttribute(k, o[k]);
-        });
-      }
-
-      r.async = 1;
-      r.src = "https://" + t + "/license" + c + "/dist/primary-bundle.js";
-
-      w = i.getElementsByTagName(g)[0];
-      w.parentNode.insertBefore(r, w);
-
-    })(window, document, "script", "data-8x8-co-browsing", "cb.8x8.com", "61e9b014325168004feb37dc", {
-      "data-8x8-co-browsing-multi-domain": true,
-      "data-8x8-co-browsing-mode": "full-control"
-    });
-  </script>
-
-  <!-- CO-BROWSE BUTTON HANDLER -->
-  <script>
-    function openCoBrowsePopup() {
-      const instance =
-        window.coBrowsingInstance ||
-        window.CoBrowsingInstance;
-
-      if (instance && typeof instance.showPopup === "function") {
-        instance.showPopup();
-      } else {
-        alert("Co-browsing is still loading. Try again in a moment.");
-        console.log("CoBrowse not ready:", window);
-      }
-    }
-  </script>
-
-  <!-- DEBUG -->
-  <script>
-    setTimeout(() => {
-      console.log("coBrowsingInstance:", window.coBrowsingInstance);
-      console.log("CoBrowsingInstance:", window.CoBrowsingInstance);
-    }, 3000);
   </script>
 
 </body>
