@@ -1,9 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BlueLeaf - 8x8 Demonstration</title>
+
+    <!-- 8x8 Co-browsing script -->
+    <script>
+      (function(e,i,g,h,t,c,o,b,r,w){
+        r=i.createElement(g);
+        r.setAttribute(h,c);
+
+        o&&Object.keys(o).map(function(k){
+          r.setAttribute(k,o[k])
+        });
+
+        r.async=1;
+        r.src='https://'+t+'/license'+c+'/dist/primary-bundle.js';
+
+        w=i.getElementsByTagName(g)[0];
+        w.parentNode.insertBefore(r,w);
+
+      })(window,document,'script','data-8x8-co-browsing','cb.8x8.com','61e9b014325168004feb37dc',{
+        'data-8x8-co-browsing-multi-domain': true,
+        'data-8x8-co-browsing-mode':'full-control'
+      });
+    </script>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #ffffff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      .image-wrap {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      .full-screen-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .chat-hover-zone {
+        position: fixed;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        width: 60px;
+        height: 260px;
+        z-index: 3999;
+        background: transparent;
+      }
+
+      .chat-drawer {
+        position: fixed;
+        top: 50%;
+        right: 0;
+        z-index: 4000;
+        transition: transform 200ms ease-in-out;
+        will-change: transform;
+        transform: translateY(-50%) translateX(calc(100% - 26px));
+      }
+
+      .chat-drawer-tab {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 26px;
+        height: 120px;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-right: none;
+        border-radius: 10px 0 0 10px;
+        z-index: 1;
+      }
+
+      .chat-drawer-tab::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 9px;
+        transform: translateY(-50%);
+        width: 6px;
+        height: 44px;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.18);
+      }
+
+      .chat-hover-zone:hover + .chat-drawer,
+      .chat-drawer:hover {
+        transform: translateY(-50%) translateX(0);
+      }
+
+      #__8x8-chat-button-container-script_27480031269c54d302b1785\.03659003 {
+        position: relative !important;
+        z-index: 2;
+      }
+
+      @media (max-width: 768px) {
+        .chat-hover-zone {
+          width: 40px;
+          height: 220px;
+        }
+
+        .chat-drawer-tab {
+          height: 100px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="chat-hover-zone" aria-hidden="true"></div>
+
+    <div class="chat-drawer" aria-label="Chat drawer">
+      <div class="chat-drawer-tab" aria-hidden="true"></div>
+
+      <div
+        id="__8x8-chat-button-container-script_27480031269c54d302b1785.03659003"
+      ></div>
+    </div>
+
+    <div class="image-wrap">
+      <img
+        src="Blueleafimage1.png"
+        alt="BlueLeaf Main Image"
+        class="full-screen-image"
+      />
+    </div>
+
+    <!-- 8x8 Chat loader -->
+    <script type="text/javascript">
+      (function (c, f, ef) {
+        var typeofC = Object.prototype.toString.call(c);
+        var props = (typeofC === "[object Object]" && c) || {};
+        var cb = f || (typeofC === "[object Function]" && c);
+        var config = {
+          scriptUuid: "script_27480031269c54d302b1785.03659003",
+          tenant: "dWtzYWxlc2VuYWJsZW1lbnQ0NzgwMQ",
+          channelName: "BlueLeaf",
+          channelUuid: "uLgRjuMhRiSI4GLy_-bskQ",
+          domain: "https://vcc-eu5.8x8.com",
+          buttonContainerId:
+            "__8x8-chat-button-container-script_27480031269c54d302b1785.03659003",
+          align: "right",
+        };
+
+        var url = new URL(
+          "https://cloud8-cc-geo.8x8.com/vcc-chat-channels/public/webchat/discovery"
+        );
+        var params = {
+          domain: config.domain,
+          tenant: config.tenant,
+          channelUuid: config.channelUuid,
+        };
+        url.search = new URLSearchParams(params).toString();
+
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            config.domain = !data.domain ? config.domain : data.domain;
+          })
+          .catch((error) =>
+            console.warn(
+              "Failed to retrieve override domain, will continue using ",
+              config.domain,
+              error
+            )
+          )
+          .finally(() => loadChat());
+
+        function loadChat() {
+          var se = document.createElement("script");
+          se.type = "text/javascript";
+          se.async = true;
+          se.src = props.loaderURL || config.domain + "/CHAT/common/js/chatv3.js";
+
+          Object.keys(config).forEach(function (k) {
+            se.dataset[k] = config[k];
+          });
+
+          Object.keys(props).forEach(function (k) {
+            se.dataset[k] = props[k];
+          });
+
+          function handleInitEvent(e) {
+            var initFn = e.detail.init;
+            initFn(config, cb);
+            se.removeEventListener("init", handleInitEvent);
+          }
+
+          function handleErrorEvent(e) {
+            ef && ef(e);
+            se.removeEventListener("customerror", handleErrorEvent);
+          }
+
+          se.addEventListener("init", handleInitEvent);
+          se.addEventListener("customerror", handleErrorEvent);
+
+          var os = document.getElementsByTagName("script")[0];
+          os.parentNode.insertBefore(se, os);
+        }
+      })();
+    </script>
+  </body>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BlueLeaf - 8x8 Demo Co Browse</title>
+  <title>BlueLeaf - 8x8 Demo</title>
 
   <style>
     html, body {
