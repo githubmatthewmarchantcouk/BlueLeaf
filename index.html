@@ -1,324 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>BlueLeaf - 8x8 Demomstration</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BlueLeaf - 8x8 Demo</title>
 
-    <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        background: #ffffff;
-      }
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #ffffff;
+    }
 
-      * {
-        box-sizing: border-box;
-      }
+    * {
+      box-sizing: border-box;
+    }
 
-      body {
-        font-family: Arial, sans-serif;
-      }
+    .image-wrap {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
 
-      .image-wrap {
-        position: relative;
-        width: 100vw;
-        height: 100vh;
-      }
+    .full-screen-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
 
-      .full-screen-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-      }
+    /* Hover zone */
+    .chat-hover-zone {
+      position: fixed;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      width: 60px;
+      height: 320px;
+      z-index: 3999;
+    }
 
-      /* Hover area near the right edge */
-      .chat-hover-zone {
-        position: fixed;
-        top: 50%;
-        right: 0;
-        transform: translateY(-50%);
-        width: 60px;
-        height: 320px;
-        z-index: 3999;
-        background: transparent;
-      }
+    /* Drawer */
+    .chat-drawer {
+      position: fixed;
+      top: 50%;
+      right: 0;
+      z-index: 4000;
+      transition: transform 0.2s ease;
+      transform: translateY(-50%) translateX(calc(100% - 26px));
+    }
 
-      /* Slide-out drawer */
-      .chat-drawer {
-        position: fixed;
-        top: 50%;
-        right: 0;
-        z-index: 4000;
-        transition: transform 200ms ease-in-out;
-        will-change: transform;
-        transform: translateY(-50%) translateX(calc(100% - 26px));
-      }
+    .chat-hover-zone:hover + .chat-drawer,
+    .chat-drawer:hover {
+      transform: translateY(-50%) translateX(0);
+    }
 
-      /* Visible tab */
-      .chat-drawer-tab {
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 26px;
-        height: 120px;
-        background: rgba(255, 255, 255, 0.95);
-        border: 1px solid rgba(0, 0, 0, 0.12);
-        border-right: none;
-        border-radius: 10px 0 0 10px;
-        z-index: 1;
-      }
+    /* Tab */
+    .chat-drawer-tab {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 26px;
+      height: 120px;
+      background: rgba(255,255,255,0.95);
+      border: 1px solid rgba(0,0,0,0.12);
+      border-right: none;
+      border-radius: 10px 0 0 10px;
+    }
 
-      .chat-drawer-tab::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 9px;
-        transform: translateY(-50%);
-        width: 6px;
-        height: 44px;
-        border-radius: 999px;
-        background: rgba(0, 0, 0, 0.18);
-      }
+    /* Drawer content */
+    .chat-drawer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+      padding-left: 26px;
+    }
 
-      /* Pop out on hover */
-      .chat-hover-zone:hover + .chat-drawer,
-      .chat-drawer:hover {
-        transform: translateY(-50%) translateX(0);
-      }
+    /* Chat button size */
+    #__8x8-chat-button-container-script_27480031269c54d302b1785\.03659003 {
+      transform: scale(1.15);
+      transform-origin: right center;
+    }
 
-      /* Content inside drawer */
-      .chat-drawer-content {
-        position: relative;
-        z-index: 2;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 12px;
-        padding-left: 26px; /* leaves room for tab */
-      }
+    /* Co-browse button */
+    .cobrowse-button img {
+      max-width: 180px;
+      cursor: pointer;
+    }
+  </style>
+</head>
 
-      /* Make chat button bigger if needed */
-      #__8x8-chat-button-container-script_27480031269c54d302b1785\.03659003 {
-        position: relative !important;
-        z-index: 2;
-        transform: scale(1.15);
-        transform-origin: right center;
-      }
+<body>
 
-      /* Co-browse button */
-      .cobrowse-button {
-        display: inline-block;
-        position: relative;
-        z-index: 2;
-      }
+<!-- Hover trigger -->
+<div class="chat-hover-zone"></div>
 
-      .cobrowse-button img {
-        display: block;
-        max-width: 180px;
-        height: auto;
-        cursor: pointer;
-      }
+<!-- Drawer -->
+<div class="chat-drawer">
+  <div class="chat-drawer-tab"></div>
 
-      @media (max-width: 768px) {
-        .chat-hover-zone {
-          width: 40px;
-          height: 280px;
-        }
+  <div class="chat-drawer-content">
 
-        .chat-drawer-tab {
-          height: 100px;
-        }
+    <!-- Chat -->
+    <div id="__8x8-chat-button-container-script_27480031269c54d302b1785.03659003"></div>
 
-        .cobrowse-button img {
-          max-width: 140px;
-        }
-      }
-    </style>
-  </head>
+    <!-- Co-browse -->
+    <a href="#" onclick="openCoBrowsePopup(); return false;">
+      <img src="co-browse - transparent.gif" alt="Start co-browsing">
+    </a>
 
-  <body>
-    <!-- Hover trigger zone -->
-    <div class="chat-hover-zone" aria-hidden="true"></div>
+  </div>
+</div>
 
-    <!-- Right-side slide-out drawer -->
-    <div class="chat-drawer" aria-label="Chat drawer">
-      <div class="chat-drawer-tab" aria-hidden="true"></div>
+<!-- Background image -->
+<div class="image-wrap">
+  <img src="Blueleafimage1.png" class="full-screen-image">
+</div>
 
-      <div class="chat-drawer-content">
-        <!-- 8x8 chat button -->
-        <div
-          id="__8x8-chat-button-container-script_27480031269c54d302b1785.03659003"
-        ></div>
+<!-- CHAT SCRIPT -->
+<script>
+(function(c, f, ef){
+  var typeofC = Object.prototype.toString.call(c);
+  var props = (typeofC === '[object Object]' && c) || {};
+  var cb = f || (typeofC === '[object Function]' && c);
 
-        <!-- Co-browse button under chat button -->
-        <a
-          href="#"
-          class="cobrowse-button"
-          onclick="window.coBrowsingInstance && coBrowsingInstance.showPopup(); return false;"
-        >
-          <img src="co-browse - transparent.gif" alt="Start co-browsing" />
-        </a>
-      </div>
-    </div>
+  var config = {
+    scriptUuid: "script_27480031269c54d302b1785.03659003",
+    tenant: "dWtzYWxlc2VuYWJsZW1lbnQ0NzgwMQ",
+    channelName: "BlueLeaf",
+    channelUuid: "uLgRjuMhRiSI4GLy_-bskQ",
+    domain: "https://vcc-eu5.8x8.com",
+    buttonContainerId: "__8x8-chat-button-container-script_27480031269c54d302b1785.03659003",
+    align: "right",
+  };
 
-    <!-- Full screen image -->
-    <div class="image-wrap">
-      <img
-        src="Blueleafimage1.png"
-        alt="BlueLeaf Main Image"
-        class="full-screen-image"
-      />
-    </div>
+  var url = new URL("https://cloud8-cc-geo.8x8.com/vcc-chat-channels/public/webchat/discovery");
+  var params = { domain: config.domain, tenant: config.tenant, channelUuid: config.channelUuid };
+  url.search = new URLSearchParams(params).toString();
 
-    <!-- 8x8 Chat loader -->
-    <script type="text/javascript">
-      (function (c, f, ef) {
-        var typeofC = Object.prototype.toString.call(c);
-        var props = (typeofC === "[object Object]" && c) || {};
-        var cb = f || (typeofC === "[object Function]" && c);
-        var config = {
-          scriptUuid: "script_27480031269c54d302b1785.03659003",
-          tenant: "dWtzYWxlc2VuYWJsZW1lbnQ0NzgwMQ",
-          channelName: "BlueLeaf",
-          channelUuid: "uLgRjuMhRiSI4GLy_-bskQ",
-          domain: "https://vcc-eu5.8x8.com",
-          buttonContainerId:
-            "__8x8-chat-button-container-script_27480031269c54d302b1785.03659003",
-          align: "right",
-        };
+  fetch(url)
+    .then(r => r.json())
+    .then(data => config.domain = !data.domain ? config.domain : data.domain)
+    .finally(() => loadChat());
 
-        var url = new URL(
-          "https://cloud8-cc-geo.8x8.com/vcc-chat-channels/public/webchat/discovery"
-        );
-        var params = {
-          domain: config.domain,
-          tenant: config.tenant,
-          channelUuid: config.channelUuid,
-        };
-        url.search = new URLSearchParams(params).toString();
+  function loadChat() {
+    var se = document.createElement("script");
+    se.async = true;
+    se.src = config.domain + "/CHAT/common/js/chatv3.js";
 
-        fetch(url)
-          .then((response) => response.json())
-          .then((data) => {
-            config.domain = !data.domain ? config.domain : data.domain;
-          })
-          .catch((error) =>
-            console.warn(
-              "Failed to retrieve override domain, will continue using ",
-              config.domain,
-              error
-            )
-          )
-          .finally(() => loadChat());
+    Object.keys(config).forEach(k => se.dataset[k] = config[k]);
 
-        function loadChat() {
-          var se = document.createElement("script");
-          se.type = "text/javascript";
-          se.async = true;
-          se.src = props.loaderURL || config.domain + "/CHAT/common/js/chatv3.js";
+    document.body.appendChild(se);
+  }
+})();
+</script>
 
-          Object.keys(config).forEach(function (k) {
-            se.dataset[k] = config[k];
-          });
+<!-- CO-BROWSING STRINGS -->
+<script>
+window.CoBrowsingCustomStrings = {
+  "popup-title": "8x8 Co-browsing",
+  "popup-close": "X",
+  "popup-start-information": "Click Start and share the session ID.",
+  "popup-session-id-label": "Session ID: ",
+  "popup-start-button": "Start",
+  "popup-stop-button": "Stop",
+  "popup-status-label": "Status: ",
+  "status-connecting": "Connecting...",
+  "status-ready": "Connected",
+  "status-disconnected": "Disconnected"
+};
+</script>
 
-          Object.keys(props).forEach(function (k) {
-            se.dataset[k] = props[k];
-          });
+<!-- CO-BROWSING SCRIPT -->
+<script>
+(function (e,i,g,h,t,c,o,b,r,w){
+  r=i.createElement(g);
+  r.setAttribute(h,c);
 
-          function handleInitEvent(e) {
-            var initFn = e.detail.init;
-            initFn(config, cb);
-            se.removeEventListener("init", handleInitEvent);
-          }
+  if(o){
+    Object.keys(o).forEach(k => r.setAttribute(k,o[k]));
+  }
 
-          function handleErrorEvent(e) {
-            ef && ef(e);
-            se.removeEventListener("customerror", handleErrorEvent);
-          }
+  r.async=1;
+  r.src='https://'+t+'/license'+c+'/dist/primary-bundle.js';
 
-          se.addEventListener("init", handleInitEvent);
-          se.addEventListener("customerror", handleErrorEvent);
+  w=i.getElementsByTagName(g)[0];
+  w.parentNode.insertBefore(r,w);
 
-          var os = document.getElementsByTagName("script")[0];
-          os.parentNode.insertBefore(se, os);
-        }
-      })();
-    </script>
+})(window,document,'script','data-8x8-co-browsing','cb.8x8.com','61e9b014325168004feb37dc',{
+  'data-8x8-co-browsing-multi-domain': true,
+  'data-8x8-co-browsing-mode':'full-control'
+});
+</script>
 
-    <!-- Co-browsing custom strings -->
-    <script>
-      window.CoBrowsingCustomStrings = {
-        "popup-title": "8x8 Co-browsing",
-        "popup-close": "X",
-        "popup-start-information":
-          "Please Click Start to initialize the Co-browsing session and pass the session ID below to the Agent.",
-        "popup-sync-information":
-          "You may have open another page that is currently being synchronized. Click Synchronize to synchronize this page instead.",
-        "popup-session-id-label": "Session ID: ",
-        "popup-start-button": "Start",
-        "popup-stop-button": "Stop",
-        "popup-sync-button": "Synchronize",
-        "popup-status-label": "Status: ",
+<!-- FIXED BUTTON HANDLER -->
+<script>
+function openCoBrowsePopup() {
+  const instance =
+    window.coBrowsingInstance ||
+    window.CoBrowsingInstance;
 
-        "status-connecting": "Connecting...",
-        "status-ready": "Connected",
-        "status-connected": "Connected",
-        "status-replica-disconnected": "Waiting for agent to connect.",
-        "status-disconnected": "Disconnected",
-        "status-sync-required": "Synchronization required",
-        "status-invalid-license": "Invalid license",
-        "status-limited-license": "All agents are busy, please try again later",
-        "status-invalid-domain-for-license": "Invalid domain for license",
-        "status-disabled-license": "Disabled license"
-      };
-    </script>
+  if (instance && typeof instance.showPopup === "function") {
+    instance.showPopup();
+  } else {
+    alert("Co-browsing is still loading. Try again in a moment.");
+    console.log("CoBrowse not ready:", window);
+  }
+}
+</script>
 
-    <!-- 8x8 Co-browsing script -->
-    <script>
-      (function (e, i, g, h, t, c, o, b, r, w) {
-        r = i.createElement(g);
-        r.setAttribute(h, c);
+<!-- DEBUG -->
+<script>
+setTimeout(() => {
+  console.log("coBrowsingInstance:", window.coBrowsingInstance);
+}, 3000);
+</script>
 
-        o &&
-          Object.keys(o).map(function (k) {
-            r.setAttribute(k, o[k]);
-          });
-
-        r.async = 1;
-        r.src = "https://" + t + "/license" + c + "/dist/primary-bundle.js";
-
-        w = i.getElementsByTagName(g)[0];
-        w.parentNode.insertBefore(r, w);
-      })(
-        window,
-        document,
-        "script",
-        "data-8x8-co-browsing",
-        "cb.8x8.com",
-        "61e9b014325168004feb37dc",
-        {
-          "data-8x8-co-browsing-multi-domain": true,
-          "data-8x8-co-browsing-mode": "full-control"
-        }
-      );
-    </script>
-
-    <!-- Optional debug check -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        setTimeout(function () {
-          if (!window.coBrowsingInstance) {
-            console.error("coBrowsingInstance not initialized");
-          }
-        }, 2000);
-      });
-    </script>
-  </body>
+</body>
 </html>
