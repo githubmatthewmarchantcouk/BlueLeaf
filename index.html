@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blueleaf 8x8 Demo</title>
+  <title>Blueleaf 8x8 Demonstration</title>
   <style>
     html, body {
       margin: 0;
@@ -17,6 +17,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
     }
 
     img {
@@ -26,33 +27,53 @@
       display: block;
     }
 
-    /* Chat button slide-out effect */
-    #__8x8-chat-button-container-script_27480031269c54d302b1785\.03659003 {
+    /* Right-edge hover strip */
+    #chat-hover-zone {
       position: fixed;
-      right: 0;
       top: 50%;
-      transform: translateY(-50%) translateX(70%) scale(0.5);
+      right: 0;
+      width: 36px;
+      height: 160px;
+      transform: translateY(-50%);
+      z-index: 9998;
+    }
+
+    /* Actual widget holder */
+    #chat-widget-shell {
+      position: fixed;
+      top: 50%;
+      right: 0;
+      width: 100px;
+      height: 100px;
+      transform: translateY(-50%) translateX(55%);
       transform-origin: right center;
-      transition: transform 0.3s ease;
+      transition: transform 0.25s ease;
       z-index: 9999;
+      overflow: visible;
+      pointer-events: auto;
     }
 
-    #__8x8-chat-button-container-script_27480031269c54d302b1785\.03659003:hover {
-      transform: translateY(-50%) translateX(0) scale(0.5);
-    }
-
-    #__8x8-chat-button-container-script_27480031269c54d302b1785\.03659003:hover {
+    #chat-hover-zone:hover + #chat-widget-shell,
+    #chat-widget-shell:hover {
       transform: translateY(-50%) translateX(0);
+    }
+
+    #__8x8-chat-button-container-script_27480031269c54d302b1785\.03659003 {
+      width: 100px;
+      height: 100px;
+      overflow: visible;
     }
   </style>
 </head>
 <body>
   <img src="Blueleafimage1.png" alt="Blueleaf image" />
 
-  <!-- 8x8 Chat Button Container -->
-  <div id="__8x8-chat-button-container-script_27480031269c54d302b1785.03659003"></div>
+  <div id="chat-hover-zone" aria-hidden="true"></div>
 
-  <!-- 8x8 Chat Script -->
+  <div id="chat-widget-shell">
+    <div id="__8x8-chat-button-container-script_27480031269c54d302b1785.03659003"></div>
+  </div>
+
   <script type="text/javascript">
   (function(c, f, ef){
       var typeofC = Object.prototype.toString.call(c);
@@ -65,7 +86,7 @@
           channelUuid: "uLgRjuMhRiSI4GLy_-bskQ",
           domain: "https://vcc-eu5.8x8.com",
           buttonContainerId: "__8x8-chat-button-container-script_27480031269c54d302b1785.03659003",
-          align: "right",
+          align: "right"
       };
 
       var url = new URL("https://cloud8-cc-geo.8x8.com/vcc-chat-channels/public/webchat/discovery");
@@ -75,19 +96,21 @@
           .then(response => response.json())
           .then(data => config.domain = !data.domain ? config.domain : data.domain)
           .catch(error => console.warn('Failed to retrieve override domain, will continue using ', config.domain, error))
-          .finally(() => loadChat());
+          .finally(function() { loadChat(); });
 
       function loadChat() {
           var se = document.createElement("script");
           se.type = "text/javascript";
           se.async = true;
           se.src = props.loaderURL || (config.domain + "/CHAT/common/js/chatv3.js");
-          Object.keys(config).forEach(function (k) { se.dataset[k] = config[k] });
-          Object.keys(props).forEach(function (k) { se.dataset[k] = props[k] });
+          Object.keys(config).forEach(function (k) { se.dataset[k] = config[k]; });
+          Object.keys(props).forEach(function (k) { se.dataset[k] = props[k]; });
           function handleInitEvent(e) {
               var initFn = e.detail.init;
               initFn(config, cb);
-              se.removeEventListener('init', handleInitEvent)
+              se.removeEventListener('init', handleInitEvent);
+              setTimeout(forceChatButtonSize, 1200);
+              setTimeout(forceChatButtonSize, 2500);
           }
           function handleErrorEvent(e) {
               ef && ef(e);
@@ -97,6 +120,25 @@
           se.addEventListener('customerror', handleErrorEvent);
           var os = document.getElementsByTagName("script")[0];
           os.parentNode.insertBefore(se, os);
+      }
+
+      function forceChatButtonSize() {
+          var container = document.getElementById("__8x8-chat-button-container-script_27480031269c54d302b1785.03659003");
+          if (!container) return;
+
+          container.style.width = "100px";
+          container.style.height = "100px";
+          container.style.overflow = "visible";
+
+          var iframe = container.querySelector("iframe");
+          if (iframe) {
+              iframe.style.width = "100px";
+              iframe.style.height = "100px";
+              iframe.style.maxWidth = "100px";
+              iframe.style.maxHeight = "100px";
+              iframe.style.border = "0";
+              iframe.style.overflow = "hidden";
+          }
       }
   })();
   </script>
