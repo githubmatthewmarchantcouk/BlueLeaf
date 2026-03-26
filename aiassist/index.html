@@ -3,28 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>BlueLeaf - 8x8 Demo</title>
+    <title>BlueLeaf - 8x8 Demo AI Assist</title>
 
     <!-- 8x8 Co-browsing script -->
     <script>
-      (function(e,i,g,h,t,c,o,b,r,w){
-        r=i.createElement(g);
-        r.setAttribute(h,c);
+      (function (e, i, g, h, t, c, o, b, r, w) {
+        r = i.createElement(g);
+        r.setAttribute(h, c);
 
-        o&&Object.keys(o).map(function(k){
-          r.setAttribute(k,o[k])
-        });
+        o &&
+          Object.keys(o).map(function (k) {
+            r.setAttribute(k, o[k]);
+          });
 
-        r.async=1;
-        r.src='https://'+t+'/license'+c+'/dist/primary-bundle.js';
+        r.async = 1;
+        r.src = "https://" + t + "/license" + c + "/dist/primary-bundle.js";
 
-        w=i.getElementsByTagName(g)[0];
-        w.parentNode.insertBefore(r,w);
-
-      })(window,document,'script','data-8x8-co-browsing','cb.8x8.com','61e9b014325168004feb37dc',{
-        'data-8x8-co-browsing-multi-domain': true,
-        'data-8x8-co-browsing-mode':'full-control'
-      });
+        w = i.getElementsByTagName(g)[0];
+        w.parentNode.insertBefore(r, w);
+      })(
+        window,
+        document,
+        "script",
+        "data-8x8-co-browsing",
+        "cb.8x8.com",
+        "61e9b014325168004feb37dc",
+        {
+          "data-8x8-co-browsing-multi-domain": true,
+          "data-8x8-co-browsing-mode": "full-control",
+        }
+      );
     </script>
 
     <style>
@@ -111,7 +119,7 @@
         transform: translateY(-50%) translateX(0);
       }
 
-      #__8x8-chat-button-container-script_27480031269c54d302b1785\.03659003 {
+      #__8x8-chat-button-container-script_1493918123696e2dfbe10540\.79726509 {
         position: relative !important;
         z-index: 2;
       }
@@ -135,9 +143,8 @@
     <div class="chat-drawer" aria-label="Chat drawer">
       <div class="chat-drawer-tab" aria-hidden="true"></div>
 
-      <div
-        id="__8x8-chat-button-container-script_27480031269c54d302b1785.03659003"
-      ></div>
+      <!-- Place this code snippet anywhere you want the button to appear in your page. If no button has been configured in the chat script, it will not show up nor take any space. -->
+      <div id="__8x8-chat-button-container-script_1493918123696e2dfbe10540.79726509"></div>
     </div>
 
     <div class="image-wrap">
@@ -148,20 +155,20 @@
       />
     </div>
 
-    <!-- 8x8 Chat loader -->
+    <!-- This script will not interfere with the button layout, you just need to include it in the same page. It must also be within the <body> section of the page, preferably just before the ending tag. -->
     <script type="text/javascript">
       (function (c, f, ef) {
         var typeofC = Object.prototype.toString.call(c);
         var props = (typeofC === "[object Object]" && c) || {};
         var cb = f || (typeofC === "[object Function]" && c);
         var config = {
-          scriptUuid: "script_27480031269c54d302b1785.03659003",
+          scriptUuid: "script_1493918123696e2dfbe10540.79726509",
           tenant: "dWtzYWxlc2VuYWJsZW1lbnQ0NzgwMQ",
-          channelName: "BlueLeaf",
-          channelUuid: "uLgRjuMhRiSI4GLy_-bskQ",
+          channelName: "McKinstryChat",
+          channelUuid: "QR-zynnnR3i3YVPYqOrmkA",
           domain: "https://vcc-eu5.8x8.com",
           buttonContainerId:
-            "__8x8-chat-button-container-script_27480031269c54d302b1785.03659003",
+            "__8x8-chat-button-container-script_1493918123696e2dfbe10540.79726509",
           align: "right",
         };
 
@@ -174,12 +181,9 @@
           channelUuid: config.channelUuid,
         };
         url.search = new URLSearchParams(params).toString();
-
         fetch(url)
           .then((response) => response.json())
-          .then((data) => {
-            config.domain = !data.domain ? config.domain : data.domain;
-          })
+          .then((data) => (config.domain = !data.domain ? config.domain : data.domain))
           .catch((error) =>
             console.warn(
               "Failed to retrieve override domain, will continue using ",
@@ -194,29 +198,23 @@
           se.type = "text/javascript";
           se.async = true;
           se.src = props.loaderURL || config.domain + "/CHAT/common/js/chatv3.js";
-
           Object.keys(config).forEach(function (k) {
             se.dataset[k] = config[k];
           });
-
           Object.keys(props).forEach(function (k) {
             se.dataset[k] = props[k];
           });
-
           function handleInitEvent(e) {
             var initFn = e.detail.init;
             initFn(config, cb);
             se.removeEventListener("init", handleInitEvent);
           }
-
           function handleErrorEvent(e) {
             ef && ef(e);
             se.removeEventListener("customerror", handleErrorEvent);
           }
-
           se.addEventListener("init", handleInitEvent);
           se.addEventListener("customerror", handleErrorEvent);
-
           var os = document.getElementsByTagName("script")[0];
           os.parentNode.insertBefore(se, os);
         }
