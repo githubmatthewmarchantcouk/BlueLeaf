@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BlueLeaf - 8x8 Demo</title>
+  <title>BlueLeaf - 8x8 Demonstration</title>
 
   <style>
-    html, body {
+    html,
+    body {
       margin: 0;
       padding: 0;
       width: 100%;
@@ -17,6 +18,10 @@
 
     * {
       box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
     }
 
     .image-wrap {
@@ -32,24 +37,24 @@
       display: block;
     }
 
-    /* Hover zone */
     .chat-hover-zone {
       position: fixed;
       top: 50%;
       right: 0;
       transform: translateY(-50%);
       width: 60px;
-      height: 320px;
+      height: 340px;
       z-index: 3999;
+      background: transparent;
     }
 
-    /* Drawer */
     .chat-drawer {
       position: fixed;
       top: 50%;
       right: 0;
       z-index: 4000;
-      transition: transform 0.2s ease;
+      transition: transform 0.2s ease-in-out;
+      will-change: transform;
       transform: translateY(-50%) translateX(calc(100% - 26px));
     }
 
@@ -58,7 +63,6 @@
       transform: translateY(-50%) translateX(0);
     }
 
-    /* Tab */
     .chat-drawer-tab {
       position: absolute;
       left: 0;
@@ -66,14 +70,28 @@
       transform: translateY(-50%);
       width: 26px;
       height: 120px;
-      background: rgba(255,255,255,0.95);
-      border: 1px solid rgba(0,0,0,0.12);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(0, 0, 0, 0.12);
       border-right: none;
       border-radius: 10px 0 0 10px;
+      z-index: 1;
     }
 
-    /* Drawer content */
+    .chat-drawer-tab::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 9px;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 44px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.18);
+    }
+
     .chat-drawer-content {
+      position: relative;
+      z-index: 2;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
@@ -81,145 +99,235 @@
       padding-left: 26px;
     }
 
-    /* Chat button size */
+    /* Chat button container */
     #__8x8-chat-button-container-script_27480031269c54d302b1785\.03659003 {
+      position: relative !important;
+      z-index: 2;
       transform: scale(1.15);
       transform-origin: right center;
+      min-width: 120px;
+      min-height: 48px;
     }
 
-    /* Co-browse button */
+    .cobrowse-button {
+      display: inline-block;
+      position: relative;
+      z-index: 2;
+    }
+
     .cobrowse-button img {
+      display: block;
       max-width: 180px;
+      height: auto;
       cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .chat-hover-zone {
+        width: 40px;
+        height: 280px;
+      }
+
+      .chat-drawer-tab {
+        height: 100px;
+      }
+
+      .cobrowse-button img {
+        max-width: 140px;
+      }
     }
   </style>
 </head>
-
 <body>
+  <div class="chat-hover-zone" aria-hidden="true"></div>
 
-<!-- Hover trigger -->
-<div class="chat-hover-zone"></div>
+  <div class="chat-drawer" aria-label="Chat drawer">
+    <div class="chat-drawer-tab" aria-hidden="true"></div>
 
-<!-- Drawer -->
-<div class="chat-drawer">
-  <div class="chat-drawer-tab"></div>
+    <div class="chat-drawer-content">
+      <div id="__8x8-chat-button-container-script_27480031269c54d302b1785.03659003"></div>
 
-  <div class="chat-drawer-content">
-
-    <!-- Chat -->
-    <div id="__8x8-chat-button-container-script_27480031269c54d302b1785.03659003"></div>
-
-    <!-- Co-browse -->
-    <a href="#" onclick="openCoBrowsePopup(); return false;">
-      <img src="co-browse - transparent.gif" alt="Start co-browsing">
-    </a>
-
+      <a
+        href="#"
+        class="cobrowse-button"
+        onclick="openCoBrowsePopup(); return false;"
+      >
+        <img src="co-browse - transparent.gif" alt="Start co-browsing" />
+      </a>
+    </div>
   </div>
-</div>
 
-<!-- Background image -->
-<div class="image-wrap">
-  <img src="Blueleafimage1.png" class="full-screen-image">
-</div>
+  <div class="image-wrap">
+    <img
+      src="Blueleafimage1.png"
+      alt="BlueLeaf Main Image"
+      class="full-screen-image"
+    />
+  </div>
 
-<!-- CHAT SCRIPT -->
-<script>
-(function(c, f, ef){
-  var typeofC = Object.prototype.toString.call(c);
-  var props = (typeofC === '[object Object]' && c) || {};
-  var cb = f || (typeofC === '[object Function]' && c);
+  <!-- 8x8 Chat loader -->
+  <script type="text/javascript">
+    (function (c, f, ef) {
+      var typeofC = Object.prototype.toString.call(c);
+      var props = (typeofC === "[object Object]" && c) || {};
+      var cb = f || (typeofC === "[object Function]" && c);
+      var config = {
+        scriptUuid: "script_27480031269c54d302b1785.03659003",
+        tenant: "dWtzYWxlc2VuYWJsZW1lbnQ0NzgwMQ",
+        channelName: "BlueLeaf",
+        channelUuid: "uLgRjuMhRiSI4GLy_-bskQ",
+        domain: "https://vcc-eu5.8x8.com",
+        buttonContainerId:
+          "__8x8-chat-button-container-script_27480031269c54d302b1785.03659003",
+        align: "right"
+      };
 
-  var config = {
-    scriptUuid: "script_27480031269c54d302b1785.03659003",
-    tenant: "dWtzYWxlc2VuYWJsZW1lbnQ0NzgwMQ",
-    channelName: "BlueLeaf",
-    channelUuid: "uLgRjuMhRiSI4GLy_-bskQ",
-    domain: "https://vcc-eu5.8x8.com",
-    buttonContainerId: "__8x8-chat-button-container-script_27480031269c54d302b1785.03659003",
-    align: "right",
-  };
+      var url = new URL(
+        "https://cloud8-cc-geo.8x8.com/vcc-chat-channels/public/webchat/discovery"
+      );
+      var params = {
+        domain: config.domain,
+        tenant: config.tenant,
+        channelUuid: config.channelUuid
+      };
+      url.search = new URLSearchParams(params).toString();
 
-  var url = new URL("https://cloud8-cc-geo.8x8.com/vcc-chat-channels/public/webchat/discovery");
-  var params = { domain: config.domain, tenant: config.tenant, channelUuid: config.channelUuid };
-  url.search = new URLSearchParams(params).toString();
+      fetch(url)
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          config.domain = !data.domain ? config.domain : data.domain;
+        })
+        .catch(function (error) {
+          console.warn(
+            "Failed to retrieve override domain, will continue using ",
+            config.domain,
+            error
+          );
+        })
+        .finally(function () {
+          loadChat();
+        });
 
-  fetch(url)
-    .then(r => r.json())
-    .then(data => config.domain = !data.domain ? config.domain : data.domain)
-    .finally(() => loadChat());
+      function loadChat() {
+        var se = document.createElement("script");
+        se.type = "text/javascript";
+        se.async = true;
+        se.src = props.loaderURL || (config.domain + "/CHAT/common/js/chatv3.js");
 
-  function loadChat() {
-    var se = document.createElement("script");
-    se.async = true;
-    se.src = config.domain + "/CHAT/common/js/chatv3.js";
+        Object.keys(config).forEach(function (k) {
+          se.dataset[k] = config[k];
+        });
 
-    Object.keys(config).forEach(k => se.dataset[k] = config[k]);
+        Object.keys(props).forEach(function (k) {
+          se.dataset[k] = props[k];
+        });
 
-    document.body.appendChild(se);
-  }
-})();
-</script>
+        function handleInitEvent(e) {
+          var initFn = e.detail.init;
+          initFn(config, cb);
+          se.removeEventListener("init", handleInitEvent);
+        }
 
-<!-- CO-BROWSING STRINGS -->
-<script>
-window.CoBrowsingCustomStrings = {
-  "popup-title": "8x8 Co-browsing",
-  "popup-close": "X",
-  "popup-start-information": "Click Start and share the session ID.",
-  "popup-session-id-label": "Session ID: ",
-  "popup-start-button": "Start",
-  "popup-stop-button": "Stop",
-  "popup-status-label": "Status: ",
-  "status-connecting": "Connecting...",
-  "status-ready": "Connected",
-  "status-disconnected": "Disconnected"
-};
-</script>
+        function handleErrorEvent(e) {
+          ef && ef(e);
+          se.removeEventListener("customerror", handleErrorEvent);
+        }
 
-<!-- CO-BROWSING SCRIPT -->
-<script>
-(function (e,i,g,h,t,c,o,b,r,w){
-  r=i.createElement(g);
-  r.setAttribute(h,c);
+        se.addEventListener("init", handleInitEvent);
+        se.addEventListener("customerror", handleErrorEvent);
 
-  if(o){
-    Object.keys(o).forEach(k => r.setAttribute(k,o[k]));
-  }
+        var os = document.getElementsByTagName("script")[0];
+        os.parentNode.insertBefore(se, os);
+      }
+    })();
+  </script>
 
-  r.async=1;
-  r.src='https://'+t+'/license'+c+'/dist/primary-bundle.js';
+  <!-- Co-browsing custom strings -->
+  <script>
+    window.CoBrowsingCustomStrings = {
+      "popup-title": "8x8 Co-browsing",
+      "popup-close": "X",
+      "popup-start-information": "Please Click Start to initialize the Co-browsing session and pass the session ID below to the Agent.",
+      "popup-sync-information": "You may have open another page that is currently being synchronized. Click Synchronize to synchronize this page instead.",
+      "popup-session-id-label": "Session ID: ",
+      "popup-start-button": "Start",
+      "popup-stop-button": "Stop",
+      "popup-sync-button": "Synchronize",
+      "popup-status-label": "Status: ",
+      "status-connecting": "Connecting...",
+      "status-ready": "Connected",
+      "status-connected": "Connected",
+      "status-replica-disconnected": "Waiting for agent to connect.",
+      "status-disconnected": "Disconnected",
+      "status-sync-required": "Synchronization required",
+      "status-invalid-license": "Invalid license",
+      "status-limited-license": "All agents are busy, please try again later",
+      "status-invalid-domain-for-license": "Invalid domain for license",
+      "status-disabled-license": "Disabled license"
+    };
+  </script>
 
-  w=i.getElementsByTagName(g)[0];
-  w.parentNode.insertBefore(r,w);
+  <!-- 8x8 Co-browsing loader -->
+  <script>
+    (function(e, i, g, h, t, c, o, b, r, w) {
+      r = i.createElement(g);
+      r.setAttribute(h, c);
 
-})(window,document,'script','data-8x8-co-browsing','cb.8x8.com','61e9b014325168004feb37dc',{
-  'data-8x8-co-browsing-multi-domain': true,
-  'data-8x8-co-browsing-mode':'full-control'
-});
-</script>
+      if (o) {
+        Object.keys(o).forEach(function(k) {
+          r.setAttribute(k, o[k]);
+        });
+      }
 
-<!-- FIXED BUTTON HANDLER -->
-<script>
-function openCoBrowsePopup() {
-  const instance =
-    window.coBrowsingInstance ||
-    window.CoBrowsingInstance;
+      r.async = 1;
+      r.src = "https://" + t + "/license" + c + "/dist/primary-bundle.js";
 
-  if (instance && typeof instance.showPopup === "function") {
-    instance.showPopup();
-  } else {
-    alert("Co-browsing is still loading. Try again in a moment.");
-    console.log("CoBrowse not ready:", window);
-  }
-}
-</script>
+      w = i.getElementsByTagName(g)[0];
+      w.parentNode.insertBefore(r, w);
+    })(
+      window,
+      document,
+      "script",
+      "data-8x8-co-browsing",
+      "cb.8x8.com",
+      "61e9b014325168004feb37dc",
+      {
+        "data-8x8-co-browsing-multi-domain": true,
+        "data-8x8-co-browsing-mode": "full-control"
+      }
+    );
+  </script>
 
-<!-- DEBUG -->
-<script>
-setTimeout(() => {
-  console.log("coBrowsingInstance:", window.coBrowsingInstance);
-}, 3000);
-</script>
+  <!-- Safe co-browse popup opener -->
+  <script>
+    function openCoBrowsePopup() {
+      var instance =
+        window.coBrowsingInstance ||
+        window.CoBrowsingInstance ||
+        window["coBrowsingInstance"];
 
+      if (instance && typeof instance.showPopup === "function") {
+        instance.showPopup();
+      } else {
+        alert("Co-browsing is still loading or not available yet.");
+        console.error("coBrowsingInstance not ready", {
+          coBrowsingInstance: window.coBrowsingInstance,
+          CoBrowsingInstance: window.CoBrowsingInstance
+        });
+      }
+    }
+  </script>
+
+  <!-- Optional debug -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      setTimeout(function () {
+        console.log("coBrowsingInstance:", window.coBrowsingInstance);
+        console.log("CoBrowsingInstance:", window.CoBrowsingInstance);
+      }, 3000);
+    });
+  </script>
 </body>
 </html>
