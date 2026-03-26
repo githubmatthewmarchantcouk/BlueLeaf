@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BlueLeaf - 8x8 Demo</title>
+  <title>BlueLeaf - 8x8 Demonstration</title>
 
   <style>
-    html,
-    body {
+    html, body {
       margin: 0;
       padding: 0;
       width: 100%;
@@ -18,10 +17,6 @@
 
     * {
       box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
     }
 
     .image-wrap {
@@ -43,9 +38,8 @@
       right: 0;
       transform: translateY(-50%);
       width: 60px;
-      height: 340px;
+      height: 320px;
       z-index: 3999;
-      background: transparent;
     }
 
     .chat-drawer {
@@ -53,8 +47,7 @@
       top: 50%;
       right: 0;
       z-index: 4000;
-      transition: transform 0.2s ease-in-out;
-      will-change: transform;
+      transition: transform 0.2s ease;
       transform: translateY(-50%) translateX(calc(100% - 26px));
     }
 
@@ -70,124 +63,79 @@
       transform: translateY(-50%);
       width: 26px;
       height: 120px;
-      background: rgba(255, 255, 255, 0.95);
-      border: 1px solid rgba(0, 0, 0, 0.12);
+      background: rgba(255,255,255,0.95);
+      border: 1px solid rgba(0,0,0,0.12);
       border-right: none;
       border-radius: 10px 0 0 10px;
-      z-index: 1;
-    }
-
-    .chat-drawer-tab::after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 9px;
-      transform: translateY(-50%);
-      width: 6px;
-      height: 44px;
-      border-radius: 999px;
-      background: rgba(0, 0, 0, 0.18);
     }
 
     .chat-drawer-content {
-      position: relative;
-      z-index: 2;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
       gap: 12px;
       padding-left: 26px;
-    }
-
-    #__8x8-chat-button-container-script_27480031269c54d302b1785\.03659003 {
-      position: relative !important;
-      z-index: 2;
-      transform: scale(1.15);
-      transform-origin: right center;
-      min-width: 120px;
-      min-height: 48px;
-    }
-
-    .cobrowse-button {
-      display: inline-block;
       position: relative;
       z-index: 2;
     }
 
-    .cobrowse-button img {
-      display: block;
-      max-width: 180px;
-      height: auto;
-      cursor: pointer;
+    #__8x8-chat-button-container-script_27480031269c54d302b1785\.03659003 {
+      position: relative !important;
+      transform: scale(1.15);
+      transform-origin: right center;
+      z-index: 2;
     }
 
-    @media (max-width: 768px) {
-      .chat-hover-zone {
-        width: 40px;
-        height: 280px;
-      }
-
-      .chat-drawer-tab {
-        height: 100px;
-      }
-
-      .cobrowse-button img {
-        max-width: 140px;
-      }
+    .cobrowse-button img {
+      max-width: 180px;
+      cursor: pointer;
+      display: block;
     }
   </style>
 </head>
-<body>
-  <div class="chat-hover-zone" aria-hidden="true"></div>
 
-  <div class="chat-drawer" aria-label="Chat drawer">
-    <div class="chat-drawer-tab" aria-hidden="true"></div>
+<body>
+
+  <div class="chat-hover-zone"></div>
+
+  <div class="chat-drawer">
+    <div class="chat-drawer-tab"></div>
 
     <div class="chat-drawer-content">
       <div id="__8x8-chat-button-container-script_27480031269c54d302b1785.03659003"></div>
 
-      <a
-        href="#"
-        class="cobrowse-button"
-        onclick="window.coBrowsingInstance && coBrowsingInstance.showPopup(); return false;"
-      >
-        <img src="co-browse - transparent.gif" alt="Start co-browsing" />
+      <a href="#" class="cobrowse-button" onclick="openCoBrowsePopup(); return false;">
+        <img src="co-browse - transparent.gif" alt="Start co-browsing">
       </a>
     </div>
   </div>
 
   <div class="image-wrap">
-    <img
-      src="Blueleafimage1.png"
-      alt="BlueLeaf Main Image"
-      class="full-screen-image"
-    />
+    <img src="Blueleafimage1.png" class="full-screen-image" alt="BlueLeaf background">
   </div>
 
-  <!-- 8x8 Chat loader -->
-  <script type="text/javascript">
+  <!-- WORKING CHAT SCRIPT -->
+  <script>
     (function (c, f, ef) {
       var typeofC = Object.prototype.toString.call(c);
       var props = (typeofC === "[object Object]" && c) || {};
       var cb = f || (typeofC === "[object Function]" && c);
+
       var config = {
         scriptUuid: "script_27480031269c54d302b1785.03659003",
         tenant: "dWtzYWxlc2VuYWJsZW1lbnQ0NzgwMQ",
         channelName: "BlueLeaf",
         channelUuid: "uLgRjuMhRiSI4GLy_-bskQ",
         domain: "https://vcc-eu5.8x8.com",
-        buttonContainerId:
-          "__8x8-chat-button-container-script_27480031269c54d302b1785.03659003",
-        align: "right",
+        buttonContainerId: "__8x8-chat-button-container-script_27480031269c54d302b1785.03659003",
+        align: "right"
       };
 
-      var url = new URL(
-        "https://cloud8-cc-geo.8x8.com/vcc-chat-channels/public/webchat/discovery"
-      );
+      var url = new URL("https://cloud8-cc-geo.8x8.com/vcc-chat-channels/public/webchat/discovery");
       var params = {
         domain: config.domain,
         tenant: config.tenant,
-        channelUuid: config.channelUuid,
+        channelUuid: config.channelUuid
       };
       url.search = new URLSearchParams(params).toString();
 
@@ -243,60 +191,69 @@
     })();
   </script>
 
-  <!-- Co-browsing custom strings -->
+  <!-- CO-BROWSING STRINGS -->
   <script>
     window.CoBrowsingCustomStrings = {
       "popup-title": "8x8 Co-browsing",
       "popup-close": "X",
-      "popup-start-information": "Please Click Start to initialize the Co-browsing session and pass the session ID below to the Agent.",
-      "popup-sync-information": "You may have open another page that is currently being synchronized. Click Synchronize to synchronize this page instead.",
+      "popup-start-information": "Click Start and share the session ID.",
       "popup-session-id-label": "Session ID: ",
       "popup-start-button": "Start",
       "popup-stop-button": "Stop",
-      "popup-sync-button": "Synchronize",
       "popup-status-label": "Status: ",
       "status-connecting": "Connecting...",
       "status-ready": "Connected",
-      "status-connected": "Connected",
-      "status-replica-disconnected": "Waiting for agent to connect.",
-      "status-disconnected": "Disconnected",
-      "status-sync-required": "Synchronization required",
-      "status-invalid-license": "Invalid license",
-      "status-limited-license": "All agents are busy, please try again later",
-      "status-invalid-domain-for-license": "Invalid domain for license",
-      "status-disabled-license": "Disabled license"
+      "status-disconnected": "Disconnected"
     };
   </script>
 
-  <!-- 8x8 Co-browsing loader -->
+  <!-- CO-BROWSING SCRIPT -->
   <script>
-    (function(e,i,g,h,t,c,o,b,r,w){
-      r=i.createElement(g);
-      r.setAttribute(h,c);
+    (function (e, i, g, h, t, c, o, b, r, w) {
+      r = i.createElement(g);
+      r.setAttribute(h, c);
 
-      o && Object.keys(o).map(function(k){
-        r.setAttribute(k,o[k]);
-      });
+      if (o) {
+        Object.keys(o).forEach(function (k) {
+          r.setAttribute(k, o[k]);
+        });
+      }
 
-      r.async=1;
-      r.src='https://'+t+'/license'+c+'/dist/primary-bundle.js';
+      r.async = 1;
+      r.src = "https://" + t + "/license" + c + "/dist/primary-bundle.js";
 
-      w=i.getElementsByTagName(g)[0];
-      w.parentNode.insertBefore(r,w);
+      w = i.getElementsByTagName(g)[0];
+      w.parentNode.insertBefore(r, w);
 
-    })(window,document,'script','data-8x8-co-browsing','cb.8x8.com','61e9b014325168004feb37dc',{
-      'data-8x8-co-browsing-multi-domain': true,
-      'data-8x8-co-browsing-mode':'full-control'
+    })(window, document, "script", "data-8x8-co-browsing", "cb.8x8.com", "61e9b014325168004feb37dc", {
+      "data-8x8-co-browsing-multi-domain": true,
+      "data-8x8-co-browsing-mode": "full-control"
     });
   </script>
 
-  <!-- Debug -->
+  <!-- CO-BROWSE BUTTON HANDLER -->
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      setTimeout(function () {
-        console.log("coBrowsingInstance:", window.coBrowsingInstance);
-      }, 2000);
-    });
+    function openCoBrowsePopup() {
+      const instance =
+        window.coBrowsingInstance ||
+        window.CoBrowsingInstance;
+
+      if (instance && typeof instance.showPopup === "function") {
+        instance.showPopup();
+      } else {
+        alert("Co-browsing is still loading. Try again in a moment.");
+        console.log("CoBrowse not ready:", window);
+      }
+    }
   </script>
+
+  <!-- DEBUG -->
+  <script>
+    setTimeout(() => {
+      console.log("coBrowsingInstance:", window.coBrowsingInstance);
+      console.log("CoBrowsingInstance:", window.CoBrowsingInstance);
+    }, 3000);
+  </script>
+
 </body>
 </html>
