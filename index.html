@@ -3,8 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>BlueLeaf - 8x8 Demo</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>BlueLeaf - 8x8 Demomstration</title>
 
     <style>
       html,
@@ -25,7 +24,6 @@
         font-family: Arial, sans-serif;
       }
 
-      /* Full screen image */
       .image-wrap {
         position: relative;
         width: 100vw;
@@ -46,7 +44,7 @@
         right: 0;
         transform: translateY(-50%);
         width: 60px;
-        height: 260px;
+        height: 320px;
         z-index: 3999;
         background: transparent;
       }
@@ -95,21 +93,51 @@
         transform: translateY(-50%) translateX(0);
       }
 
-      /* Keep widget layout inside drawer */
+      /* Content inside drawer */
+      .chat-drawer-content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 12px;
+        padding-left: 26px; /* leaves room for tab */
+      }
+
+      /* Make chat button bigger if needed */
       #__8x8-chat-button-container-script_27480031269c54d302b1785\.03659003 {
         position: relative !important;
         z-index: 2;
+        transform: scale(1.15);
+        transform-origin: right center;
       }
 
-      /* Optional mobile tweak */
+      /* Co-browse button */
+      .cobrowse-button {
+        display: inline-block;
+        position: relative;
+        z-index: 2;
+      }
+
+      .cobrowse-button img {
+        display: block;
+        max-width: 180px;
+        height: auto;
+        cursor: pointer;
+      }
+
       @media (max-width: 768px) {
         .chat-hover-zone {
           width: 40px;
-          height: 220px;
+          height: 280px;
         }
 
         .chat-drawer-tab {
           height: 100px;
+        }
+
+        .cobrowse-button img {
+          max-width: 140px;
         }
       }
     </style>
@@ -119,13 +147,25 @@
     <!-- Hover trigger zone -->
     <div class="chat-hover-zone" aria-hidden="true"></div>
 
-    <!-- Right-side slide-out chat drawer -->
+    <!-- Right-side slide-out drawer -->
     <div class="chat-drawer" aria-label="Chat drawer">
       <div class="chat-drawer-tab" aria-hidden="true"></div>
 
-      <div
-        id="__8x8-chat-button-container-script_27480031269c54d302b1785.03659003"
-      ></div>
+      <div class="chat-drawer-content">
+        <!-- 8x8 chat button -->
+        <div
+          id="__8x8-chat-button-container-script_27480031269c54d302b1785.03659003"
+        ></div>
+
+        <!-- Co-browse button under chat button -->
+        <a
+          href="#"
+          class="cobrowse-button"
+          onclick="window.coBrowsingInstance && coBrowsingInstance.showPopup(); return false;"
+        >
+          <img src="co-browse - transparent.gif" alt="Start co-browsing" />
+        </a>
+      </div>
     </div>
 
     <!-- Full screen image -->
@@ -210,6 +250,75 @@
           os.parentNode.insertBefore(se, os);
         }
       })();
+    </script>
+
+    <!-- Co-browsing custom strings -->
+    <script>
+      window.CoBrowsingCustomStrings = {
+        "popup-title": "8x8 Co-browsing",
+        "popup-close": "X",
+        "popup-start-information":
+          "Please Click Start to initialize the Co-browsing session and pass the session ID below to the Agent.",
+        "popup-sync-information":
+          "You may have open another page that is currently being synchronized. Click Synchronize to synchronize this page instead.",
+        "popup-session-id-label": "Session ID: ",
+        "popup-start-button": "Start",
+        "popup-stop-button": "Stop",
+        "popup-sync-button": "Synchronize",
+        "popup-status-label": "Status: ",
+
+        "status-connecting": "Connecting...",
+        "status-ready": "Connected",
+        "status-connected": "Connected",
+        "status-replica-disconnected": "Waiting for agent to connect.",
+        "status-disconnected": "Disconnected",
+        "status-sync-required": "Synchronization required",
+        "status-invalid-license": "Invalid license",
+        "status-limited-license": "All agents are busy, please try again later",
+        "status-invalid-domain-for-license": "Invalid domain for license",
+        "status-disabled-license": "Disabled license"
+      };
+    </script>
+
+    <!-- 8x8 Co-browsing script -->
+    <script>
+      (function (e, i, g, h, t, c, o, b, r, w) {
+        r = i.createElement(g);
+        r.setAttribute(h, c);
+
+        o &&
+          Object.keys(o).map(function (k) {
+            r.setAttribute(k, o[k]);
+          });
+
+        r.async = 1;
+        r.src = "https://" + t + "/license" + c + "/dist/primary-bundle.js";
+
+        w = i.getElementsByTagName(g)[0];
+        w.parentNode.insertBefore(r, w);
+      })(
+        window,
+        document,
+        "script",
+        "data-8x8-co-browsing",
+        "cb.8x8.com",
+        "61e9b014325168004feb37dc",
+        {
+          "data-8x8-co-browsing-multi-domain": true,
+          "data-8x8-co-browsing-mode": "full-control"
+        }
+      );
+    </script>
+
+    <!-- Optional debug check -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          if (!window.coBrowsingInstance) {
+            console.error("coBrowsingInstance not initialized");
+          }
+        }, 2000);
+      });
     </script>
   </body>
 </html>
