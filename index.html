@@ -3,7 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>BlueLeaf - 8x8 Demo</title>
+    <title>BlueLeaf - 8x8 Demonstration</title>
+
+    <!-- 8x8 Co-browsing script -->
+    <script>
+      (function(e,i,g,h,t,c,o,b,r,w){
+        r=i.createElement(g);
+        r.setAttribute(h,c);
+
+        o&&Object.keys(o).map(function(k){
+          r.setAttribute(k,o[k])
+        });
+
+        r.async=1;
+        r.src='https://'+t+'/license'+c+'/dist/primary-bundle.js';
+
+        w=i.getElementsByTagName(g)[0];
+        w.parentNode.insertBefore(r,w);
+
+      })(window,document,'script','data-8x8-co-browsing','cb.8x8.com','61e9b014325168004feb37dc',{
+        'data-8x8-co-browsing-multi-domain': true,
+        'data-8x8-co-browsing-mode':'full-control'
+      });
+    </script>
 
     <style>
       html,
@@ -24,7 +46,6 @@
         font-family: Arial, sans-serif;
       }
 
-      /* Full screen image */
       .image-wrap {
         position: relative;
         width: 100vw;
@@ -38,7 +59,6 @@
         display: block;
       }
 
-      /* Hover area near the right edge */
       .chat-hover-zone {
         position: fixed;
         top: 50%;
@@ -50,7 +70,6 @@
         background: transparent;
       }
 
-      /* Slide-out drawer */
       .chat-drawer {
         position: fixed;
         top: 50%;
@@ -61,7 +80,6 @@
         transform: translateY(-50%) translateX(calc(100% - 26px));
       }
 
-      /* Visible tab */
       .chat-drawer-tab {
         position: absolute;
         left: 0;
@@ -88,19 +106,16 @@
         background: rgba(0, 0, 0, 0.18);
       }
 
-      /* Pop out on hover */
       .chat-hover-zone:hover + .chat-drawer,
       .chat-drawer:hover {
         transform: translateY(-50%) translateX(0);
       }
 
-      /* Keep widget layout inside drawer */
       #__8x8-chat-button-container-script_27480031269c54d302b1785\.03659003 {
         position: relative !important;
         z-index: 2;
       }
 
-      /* Optional mobile tweak */
       @media (max-width: 768px) {
         .chat-hover-zone {
           width: 40px;
@@ -115,10 +130,8 @@
   </head>
 
   <body>
-    <!-- Hover trigger zone -->
     <div class="chat-hover-zone" aria-hidden="true"></div>
 
-    <!-- Right-side slide-out chat drawer -->
     <div class="chat-drawer" aria-label="Chat drawer">
       <div class="chat-drawer-tab" aria-hidden="true"></div>
 
@@ -127,7 +140,6 @@
       ></div>
     </div>
 
-    <!-- Full screen image -->
     <div class="image-wrap">
       <img
         src="Blueleafimage1.png"
